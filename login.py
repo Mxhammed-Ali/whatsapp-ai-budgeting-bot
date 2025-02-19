@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from parser import WhatsAppParser  # Import the parser class
 import time
-
+from ollama_parser import OllamaBudgetAssistant
 # Set up Chrome options
 chrome_options = Options()
 chrome_options.add_argument(r"user-data-dir=C:\Users\mohda\AppData\Local\Google\Chrome\User Data\Default")
@@ -26,13 +26,23 @@ wait.until(EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="tr
 print("Logged in successfully!")
 
 # Initialize WhatsAppParser
-group_name = "Budget home"
-parser = WhatsAppParser(driver, wait, group_name)
+#group_name = "Budget home"
+#parser = WhatsAppParser(driver, wait, group_name)
 
 # Perform parsing steps
-parser.open_group()
-parser.scroll_messages()
-parser.extract_and_save_messages()
+#parser.open_group()
+#parser.scroll_messages()
+#parser.extract_and_save_messages()
+
+# Process the CSV and get the budget summary
+csv_file = "Budget_home_messages.csv"  # Path to your CSV file
+budget_assistant = OllamaBudgetAssistant(csv_file)
+expense_summary = budget_assistant.get_budget_summary()
+
+# Display the expense summary
+print("\nExpense Summary:")
+for category, total in expense_summary.items():
+    print(f"{category}: ${total}")
 
 # Close after operations
 time.sleep(5)
