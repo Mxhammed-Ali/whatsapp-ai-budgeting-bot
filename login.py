@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from parser import WhatsAppParser  # Import the parser class
 import time
 from ollama_parser import OllamaBudgetAssistant
+from mrdeep_handler import MrDeepAI as thedeep
 # Set up Chrome options
 chrome_options = Options()
 chrome_options.add_argument(r"user-data-dir=C:\Users\mohda\AppData\Local\Google\Chrome\User Data\Default")
@@ -25,14 +26,19 @@ wait = WebDriverWait(driver, 60)
 wait.until(EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]')))
 print("Logged in successfully!")
 
-# Initialize WhatsAppParser
-#group_name = "Budget home"
-#parser = WhatsAppParser(driver, wait, group_name)
+#Initialize WhatsAppParser
+group_name ="The mostly all shredded..cheese"
+parser = WhatsAppParser(driver, wait, group_name)
 
-# Perform parsing steps
+#Perform parsing steps
 #parser.open_group()
 #parser.scroll_messages()
-#parser.extract_and_save_messages()
+# parser.extract_and_save_messages()
+
+# Start the MrDeepAI listener to handle AI prompts
+mrdeep_ai = thedeep(driver, wait, group_name)
+mrdeep_ai.topen_group()
+mrdeep_ai.listen_for_mrdeep()  # This keeps running in a loop
 
 # Process the CSV and get the budget summary
 csv_file = "Budget_home_messages.csv"  # Path to your CSV file
